@@ -1,5 +1,5 @@
 {
-  "name": "litepay-node-sdk",
+  "name": "@litepay/litepay-js-sdk",
   "version": "0.0.1",
   "description": "",
   "scripts": {
