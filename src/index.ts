@@ -5,20 +5,27 @@ import type { PaymentLinkCreateInput } from './types';
 export default class LitepayClient {
   apiKey = "";
   debug = false;
+  customHeaders: Function | undefined;
 
-  constructor({ apiKey, debug }: { apiKey?: string, debug?: boolean }) {
+  constructor({ apiKey, debug, customHeaders }: { apiKey?: string, debug?: boolean, customHeaders: Function | undefined }) {
     if(apiKey) this.apiKey = apiKey;
     if(debug) this.debug = true;
+    if(customHeaders) this.customHeaders = customHeaders;
   }
 
   async query({ query, variables }: { query: string, variables?: Record<string, unknown>}) {
+    const headers = {
+      'content-type': 'application/json',
+      'x-api-key': this.apiKey
+    };
+    if(this.customHeaders) {
+      const toAdd = await this.customHeaders();
+      Object.assign(headers, toAdd);
+    }
     const result = await fetch(API_URL, {
       method: 'POST',
       cache: "no-store",
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': this.apiKey
-      }, 
+      headers, 
       body: JSON.stringify({ query, variables })
     }).then(res => res.json());
     return result;
