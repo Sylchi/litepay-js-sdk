@@ -12,6 +12,7 @@ export default class LitepayClient {
   async query({ query, variables }: { query: string, variables?: Record<string, unknown>}) {
     const result = await fetch(API_URL, {
       method: 'POST',
+      cache: "no-store",
       headers: {
         'content-type': 'application/json',
         'x-api-key': this.apiKey
