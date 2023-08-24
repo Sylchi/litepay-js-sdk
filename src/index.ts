@@ -1,11 +1,16 @@
-const API_URL = 'https://api.litepay.gg/api/graphql';
+const GRAPHQL_API_URL = 'https://api.litepay.gg/api/graphql';
+const WEBSOCKET_URL = 'wss://api.litepay.gg';
 
 import type { PaymentLinkCreateInput, PaymentLinkCreateOutput } from './types';
+import type { Socket } from 'socket.io-client';
+import io from 'socket.io-client';
 
 class LitepayClient {
   apiKey = "";
   debug = false;
   customHeaders: Function | undefined;
+  orderUpdateSubscriptions = new Map<string, Set<any>>;
+  wsClient: Socket | undefined;
 
   constructor({ apiKey, debug, customHeaders }: { apiKey?: string, debug?: boolean, customHeaders?: Function | undefined }) {
     if(apiKey) this.apiKey = apiKey;
@@ -22,7 +27,7 @@ class LitepayClient {
       const toAdd = await this.customHeaders();
       Object.assign(headers, toAdd);
     }
-    const result = await fetch(API_URL, {
+    const result = await fetch(GRAPHQL_API_URL, {
       method: 'POST',
       cache: "no-store",
       headers, 
@@ -108,6 +113,14 @@ class LitepayClient {
     })
     return result.data.paymentLink.createOrder;
   }
+  subscribeOrderUpdates({ orderId, callback }: { orderId: string, callback: (...args: any[]) => void }) {
+    if(!this.wsClient) this.wsClient = io(WEBSOCKET_URL, {
+      reconnectionDelayMax: 10000,
+      withCredentials: true
+    });
+    this.wsClient.on("orderUpdate", callback);
+    this.wsClient.emit("subscribeOrderUpdate", orderId);
+  } 
 }
 
 export default LitepayClient;
