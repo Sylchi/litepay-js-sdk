@@ -1,8 +1,8 @@
 const API_URL = 'https://api.litepay.gg/api/graphql';
 
-import type { PaymentLinkCreateInput } from './types';
+import type { PaymentLinkCreateInput, PaymentLinkCreateOutput } from './types';
 
-export default class LitepayClient {
+class LitepayClient {
   apiKey = "";
   debug = false;
   customHeaders: Function | undefined;
@@ -57,7 +57,7 @@ export default class LitepayClient {
     }
   }
 
-  async createPaymentLink(params: PaymentLinkCreateInput) {
+  async createPaymentLink(params: PaymentLinkCreateInput): Promise<PaymentLinkCreateOutput> {
     try {
       const result = await this.query({
         query: `
@@ -90,5 +90,6 @@ export default class LitepayClient {
       throw new Error("Litepay: Couldn't create payment link");
     }
   }
-
 }
+
+export default LitepayClient;

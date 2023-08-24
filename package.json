@@ -1,6 +1,6 @@
 {
   "name": "@litepay/litepay-js-sdk",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "repository": {
     "type": "git",
     "url": "https://github.com/litepay-gg/litepay-js-sdk"
@@ -17,7 +17,8 @@
   "scripts": {
     "test": "jest",
     "start": "parcel",
-    "build": "parcel build"
+    "build": "parcel build",
+    "generate": "typedoc src/index.ts src/types.d.ts"
   },
   "keywords": [],
   "author": "Ken Kauksi",

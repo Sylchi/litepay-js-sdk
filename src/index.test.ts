@@ -31,5 +31,5 @@ test('Can create payment link', async () => {
   expect(createResult.description).toBe('Test payment description');
   expect(createResult.toCcy).toBe('ETH');
   expect(createResult.receiveAddress).toBe('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045');
-  expect(createResult.metadata.clientId).toBe('1234');
+  expect(createResult.metadata?.clientId).toBe('1234');
 })
