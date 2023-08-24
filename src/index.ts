@@ -96,6 +96,23 @@ class LitepayClient {
       throw new Error("Litepay: Couldn't create payment link");
     }
   }
+  /** Useful for showing customer the rate after they have selected their desired currency */
+  async getRate({ paymentLinkId, fromCcy }: { paymentLinkId: string, fromCcy: string }): Promise<string> {
+    const result = await this.query({ 
+      query: `
+        query($where: PaymentLinkWhereUniqueInput!, $fromCcy: String!) {
+          paymentLink(where: $where) {
+            id
+            getRate(fromCcy: $fromCcy)
+          } 
+        }
+      `, variables: {
+        where: { [paymentLinkId.length === 8 ? 'friendlyId':'id']: paymentLinkId },
+        fromCcy
+      }
+    })
+    return result.data.paymentLink.getRate;
+  }
   /** Returns order ID. */
   async createOrder({ paymentLinkId, fromCcy }: { paymentLinkId: string, fromCcy: string }): Promise<string> {
     const result = await this.query({ 
