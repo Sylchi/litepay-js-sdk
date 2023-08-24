@@ -1,6 +1,6 @@
 {
   "name": "@litepay/litepay-js-sdk",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Litepay.gg api wrapper for node and browser",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "source": "src/index.ts",
