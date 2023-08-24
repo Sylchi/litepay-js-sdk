@@ -63,6 +63,7 @@ class LitepayClient {
         query: `
           mutation CreatePaymentLink($data: PaymentLinkCreateInput!) {
             createPaymentLink(data: $data) {
+              id: friendlyId
               friendlyId
               title
               description
@@ -89,6 +90,23 @@ class LitepayClient {
       if(this.debug) console.error(err);
       throw new Error("Litepay: Couldn't create payment link");
     }
+  }
+  /** Returns order ID. */
+  async createOrder({ paymentLinkId, fromCcy }: { paymentLinkId: string, fromCcy: string }): Promise<string> {
+    const result = await this.query({ 
+      query: `
+        query($where: PaymentLinkWhereUniqueInput!, $fromCcy: String!) {
+          paymentLink(where: $where) {
+            id
+            createOrder(fromCcy: $fromCcy)
+          } 
+        }
+      `, variables: {
+        where: { [paymentLinkId.length === 8 ? 'friendlyId':'id']: paymentLinkId },
+        fromCcy
+      }
+    })
+    return result.data.paymentLink.createOrder;
   }
 }
 

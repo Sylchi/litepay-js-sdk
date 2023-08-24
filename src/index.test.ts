@@ -11,6 +11,8 @@ test('Can get tokens', async () => {
   expect(tokens.length).toBeGreaterThan(0);
 })
 
+let paymentLinkCache: any;
+
 test('Can create payment link', async () => {
   const createResult = await client.createPaymentLink({
     amount: '10.00',
@@ -23,6 +25,7 @@ test('Can create payment link', async () => {
       clientId: '1234'
     }
   });
+  paymentLinkCache = createResult;
   expect(createResult).toBeDefined();
   expect(createResult.friendlyId).toBeDefined();
   expect(createResult.amount).toBe("10.0000");
@@ -33,3 +36,8 @@ test('Can create payment link', async () => {
   expect(createResult.receiveAddress).toBe('0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045');
   expect(createResult.metadata?.clientId).toBe('1234');
 })
+
+test('Can create order', async () => {
+  const orderCreateResult = await client.createOrder({ paymentLinkId: paymentLinkCache.friendlyId, fromCcy: 'MATIC' });
+  expect(orderCreateResult).toBeTruthy();
+}, 10000)
