@@ -8,10 +8,13 @@ This is a wrapper over Litepay.gg api. Typedoc available at https://litepay-gg.g
 
 
 ## Usage
+```TypeScript
+    import LitepayClient from '@litepay/litepay-js-sdk';
 
-    import LitepayClient from '@litepay/litepay-js-sdk'
     const lpClient = new LitepayClient({});
+
     lpClient.getTokens().then(console.log);
+```
 
 ## Methods
 
