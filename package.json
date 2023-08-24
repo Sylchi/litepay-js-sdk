@@ -2,7 +2,9 @@
   "name": "@litepay/litepay-js-sdk",
   "version": "0.0.1",
   "description": "",
-  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "jest"
   },
