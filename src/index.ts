@@ -97,7 +97,7 @@ class LitepayClient {
     }
   }
   /** Useful for showing customer the rate after they have selected their desired currency */
-  async getRate({ paymentLinkId, fromCcy }: { paymentLinkId: string, fromCcy: string }): Promise<string> {
+  async getRate({ paymentLinkId, fromCcy }: { paymentLinkId: string, fromCcy: string }): Promise<[any, Array<any>]> {
     const result = await this.query({ 
       query: `
         query($where: PaymentLinkWhereUniqueInput!, $fromCcy: String!) {
@@ -111,10 +111,10 @@ class LitepayClient {
         fromCcy
       }
     })
-    return result.data.paymentLink.getRate;
+    return [result.data.paymentLink.getRate, result.errors];
   }
   /** Returns order ID. */
-  async createOrder({ paymentLinkId, fromCcy }: { paymentLinkId: string, fromCcy: string }): Promise<string> {
+  async createOrder({ paymentLinkId, fromCcy }: { paymentLinkId: string, fromCcy: string }): Promise<[string, Array<any>]> {
     const result = await this.query({ 
       query: `
         query($where: PaymentLinkWhereUniqueInput!, $fromCcy: String!) {
@@ -128,7 +128,7 @@ class LitepayClient {
         fromCcy
       }
     })
-    return result.data.paymentLink.createOrder;
+    return [result.data.paymentLink.createOrder, result.errors];
   }
   subscribeOrderUpdates({ orderId, callback }: { orderId: string, callback: (...args: any[]) => void }) {
     if(!this.wsClient) this.wsClient = io(WEBSOCKET_URL, {
