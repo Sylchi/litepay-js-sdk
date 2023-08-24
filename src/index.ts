@@ -7,7 +7,7 @@ export default class LitepayClient {
   debug = false;
   customHeaders: Function | undefined;
 
-  constructor({ apiKey, debug, customHeaders }: { apiKey?: string, debug?: boolean, customHeaders: Function | undefined }) {
+  constructor({ apiKey, debug, customHeaders }: { apiKey?: string, debug?: boolean, customHeaders?: Function | undefined }) {
     if(apiKey) this.apiKey = apiKey;
     if(debug) this.debug = true;
     if(customHeaders) this.customHeaders = customHeaders;
