@@ -35,7 +35,7 @@ class LitepayClient {
     }).then(res => res.json());
     return result;
   }
-  
+  /** Get a list of tokens available to send and receive */
   async getTokens() {
     try {
       const result = await this.query({
@@ -130,6 +130,7 @@ class LitepayClient {
     })
     return [result.data.paymentLink.createOrder, result.errors];
   }
+  /** Subscribe to real time order updates */
   subscribeOrderUpdates({ orderId, callback }: { orderId: string, callback: (...args: any[]) => void }) {
     if(!this.wsClient) this.wsClient = io(WEBSOCKET_URL, {
       reconnectionDelayMax: 10000,
@@ -138,6 +139,7 @@ class LitepayClient {
     this.wsClient.on("orderUpdate", callback);
     this.wsClient.emit("subscribeOrderUpdate", orderId);
   }
+  /** Subscribe to real time order creations from payment link */
   subscribePaymentLink({ paymentLinkId, callback }: { paymentLinkId: string, callback: (...args: any[]) => void }) {
     if(!this.wsClient) this.wsClient = io(WEBSOCKET_URL, {
       reconnectionDelayMax: 10000,
