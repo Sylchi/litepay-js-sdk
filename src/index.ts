@@ -137,6 +137,14 @@ class LitepayClient {
     });
     this.wsClient.on("orderUpdate", callback);
     this.wsClient.emit("subscribeOrderUpdate", orderId);
+  }
+  subscribePaymentLink({ paymentLinkId, callback }: { paymentLinkId: string, callback: (...args: any[]) => void }) {
+    if(!this.wsClient) this.wsClient = io(WEBSOCKET_URL, {
+      reconnectionDelayMax: 10000,
+      withCredentials: true
+    });
+    this.wsClient.on("orderCreated", callback);
+    this.wsClient.emit("subscribePaymentLink", paymentLinkId);
   } 
 }
 
