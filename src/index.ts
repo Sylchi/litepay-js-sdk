@@ -1,12 +1,11 @@
 const API_URL = 'https://api.litepay.gg/api/graphql';
 
 export default class LitepayClient {
-  apiKey: string;
+  apiKey = "";
   debug = false;
 
-  constructor({ apiKey, debug }: { apiKey: string, debug?: boolean }) {
-    if(!apiKey) throw new Error("API key is required!")
-    this.apiKey = apiKey;
+  constructor({ apiKey, debug }: { apiKey?: string, debug?: boolean }) {
+    if(apiKey) this.apiKey = apiKey;
     if(debug) this.debug = true;
   }
 
